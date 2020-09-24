@@ -104,19 +104,6 @@
             zoom: 6, // starting zoom
             transformRequest: transformRequest
         });
-        
-        // add markers to map
-        geojson.features.forEach(function(marker) {
-
-          // create a HTML element for each feature
-          var el = document.createElement('div');
-          el.className = 'marker';
-
-          // make a marker for each feature and add to the map
-          new mapboxgl.Marker(el)
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map);
-        });
 
         $(document).ready(function() {
             $.ajax({
@@ -137,20 +124,37 @@
                     delimiter: ','
                 }, function(err, data) {
                     map.on('load', function() {
+                        
+                        map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png', function (error, image) {
+                                if (error) throw error;
+                                map.addImage('cat', image);
+                                map.addLayer({
+                                    'id': 'csvData',
+                                    'type': 'symbol',
+                                    'source': {
+                                        'type': 'geojson',
+                                        'data': data
+                                    },
+                                    'layout': {
+                                        'icon-image': 'cat',
+                                        'icon-size': 0.25
+                                    }
+                                });
+                            });
+                    });
 
-                        //Add the the layer to the map 
-                        map.addLayer({
-                            'id': 'csvData',
-                            'type': 'circle',
-                            'source': {
-                                'type': 'geojson',
-                                'data': data
-                            },
-                            'paint': {
-                                'circle-radius': 5,
-                                'circle-color': "purple"
-                            }
-                        });
+//                         //Add the the layer to the map 
+//                         map.addLayer({
+//                             'id': 'csvData',
+//                             'type': 'symbol',
+//                             'source': {
+//                                 'type': 'geojson',
+//                                 'data': data
+//                             },
+//                             'layout': {
+//                                 'icon-image': 'mapbox-icon.png'
+//                             }
+//                         });
 
 
                         // When a click event occurs on a feature in the csvData layer, open a popup at the
