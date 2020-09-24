@@ -71,14 +71,6 @@
         .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
             border-bottom-color: rgb(61, 59, 59);
         }
-        .marker {
-          background-image: url('mapbox-icon.png');
-          background-size: cover;
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          cursor: pointer;
-        }
     </style>
 </head>
 
@@ -124,37 +116,20 @@
                     delimiter: ','
                 }, function(err, data) {
                     map.on('load', function() {
-                        
-                        map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png', function (error, image) {
-                                if (error) throw error;
-                                map.addImage('cat', image);
-                                map.addLayer({
-                                    'id': 'csvData',
-                                    'type': 'symbol',
-                                    'source': {
-                                        'type': 'geojson',
-                                        'data': data
-                                    },
-                                    'layout': {
-                                        'icon-image': 'cat',
-                                        'icon-size': 0.25
-                                    }
-                                });
-                            });
-                    });
 
-//                         //Add the the layer to the map 
-//                         map.addLayer({
-//                             'id': 'csvData',
-//                             'type': 'symbol',
-//                             'source': {
-//                                 'type': 'geojson',
-//                                 'data': data
-//                             },
-//                             'layout': {
-//                                 'icon-image': 'mapbox-icon.png'
-//                             }
-//                         });
+                        //Add the the layer to the map 
+                        map.addLayer({
+                            'id': 'csvData',
+                            'type': 'circle',
+                            'source': {
+                                'type': 'geojson',
+                                'data': data
+                            },
+                            'paint': {
+                                'circle-radius': 5,
+                                'circle-color': "purple"
+                            }
+                        });
 
 
                         // When a click event occurs on a feature in the csvData layer, open a popup at the
