@@ -84,17 +84,16 @@
                 url.slice(10, 26) === "tiles.mapbox.com";
             return {
                 url: isMapboxRequest ?
-                    url.replace("?", "?pluginName=sheetMapper&") :
-                    url
+                    url.replace("?", "?pluginName=sheetMapper&") : url
             };
         };
-        //YOUR TURN: add your Mapbox token
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94LWNvbW11bml0eSIsImEiOiJja2Q3cXQ0cGUyMm95MnRudXdyYXhhcDR1In0.JNiOY6eSfuV0kqWX-beDNg'; //Mapbox token 
+        //YOUR TURN: add your Mapbox token 
+        mapboxgl.accessToken = 'pk.eyJ1Ijoidm9ndWV0b3dlcnMiLCJhIjoiY2tmZnY2YXQ2MDJrYzJzcWt2c2w2b2I0eCJ9.sn8cf5yeAxxfS_Gpile1jQ'; //Mapbox token 
         var map = new mapboxgl.Map({
             container: 'map', // container id
-            style: 'mapbox://styles/mapbox/streets-v11', //stylesheet location
-            center: [-122.411, 37.785], // starting position
-            zoom: 10, // starting zoom
+            style: 'mapbox://styles/voguetowers/ckffvw2ei1n8519mkdcnfu1cf', //stylesheet location
+            center: [-85.294525, 35.06875], // starting position
+            zoom: 6, // starting zoom
             transformRequest: transformRequest
         });
 
@@ -102,13 +101,12 @@
             $.ajax({
                 type: "GET",
                 //YOUR TURN: Replace with csv export link
-                url: 'https://docs.google.com/spreadsheets/d/1dLkr70tfAL_-U6ipad9xLF39lHmU8k-xd08uKHkLD5M/gviz/tq?tqx=out:csv&sheet=Sheet1',
+                url: 'https://docs.google.com/spreadsheets/d/1H6ZH6PjV891iyyrtTrf9Pn1qiq_SPJWZ5_zWLiCPh00/gviz/tq?tqx=out:csv&sheet=SiteTracker',
                 dataType: "text",
                 success: function(csvData) {
                     makeGeoJSON(csvData);
                 }
             });
-
 
 
             function makeGeoJSON(csvData) {
@@ -119,7 +117,7 @@
                 }, function(err, data) {
                     map.on('load', function() {
 
-                        //Add the the layer to the map
+                        //Add the the layer to the map 
                         map.addLayer({
                             'id': 'csvData',
                             'type': 'circle',
@@ -139,10 +137,10 @@
                         map.on('click', 'csvData', function(e) {
                             var coordinates = e.features[0].geometry.coordinates.slice();
 
-                            //set popup text
-                            //You can adjust the values of the popup to match the headers of your CSV.
-                            // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-                            var description = `<h3>` + e.features[0].properties.Name + `</h3>` + `<h4>` + `<b>` + `Address: ` + `</b>` + e.features[0].properties.Address + `</h4>` + `<h4>` + `<b>` + `Phone: ` + `</b>` + e.features[0].properties.Phone + `</h4>`;
+                            //set popup text 
+                            //You can adjust the values of the popup to match the headers of your CSV. 
+                            // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV. 
+                            var description = `<h3>` + e.features[0].properties.Name + `</h3>` + `<h4>` + `<b>` + `Address: ` + `</b>` + e.features[0].properties.Address + `</h4>` + `<h4>` + `<b>` + `Phone: ` + `</b>` + e.features[0].properties.City + `,&nbsp;` + e.features[0].properties.State + e.features[0].properties.Zip `</h4>`;
 
                             // Ensure that if the map is zoomed out such that multiple
                             // copies of the feature are visible, the popup appears
