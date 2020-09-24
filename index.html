@@ -71,6 +71,14 @@
         .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
             border-bottom-color: rgb(61, 59, 59);
         }
+        .marker {
+          background-image: url('mapbox-icon.png');
+          background-size: cover;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
     </style>
 </head>
 
@@ -95,6 +103,19 @@
             center: [-85.294525, 35.06875], // starting position
             zoom: 6, // starting zoom
             transformRequest: transformRequest
+        });
+        
+        // add markers to map
+        geojson.features.forEach(function(marker) {
+
+          // create a HTML element for each feature
+          var el = document.createElement('div');
+          el.className = 'marker';
+
+          // make a marker for each feature and add to the map
+          new mapboxgl.Marker(el)
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
         });
 
         $(document).ready(function() {
